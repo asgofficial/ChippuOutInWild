@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Anyone can read the leaderboard. A signed-in user can only
+    // create/update their OWN player doc, and can't fake someone
+    // else's score by writing to a different uid.
+    match /players/{uid} {
+      allow read: if true;
+      allow create, update: if request.auth != null
+                             && request.auth.uid == uid
+                             && request.resource.data.keys().hasOnly(['username', 'bestScore', 'updatedAt'])
+                             && request.resource.data.bestScore is int;
+      allow delete: if false;
+    }
+  }
+}

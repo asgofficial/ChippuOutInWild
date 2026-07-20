@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- MOBILE: viewport-fit=cover lets us pad around notches/home-indicators;
+       maximum-scale=1 + user-scalable=no stop accidental pinch/double-tap
+       zoom while flapping (standard for canvas games; content isn't text-heavy) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <!-- SEO META TAGS -->
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <title>Chippu Out In Wild – Free Flappy Bird Style Arcade Game Online</title>
+  <meta name="description" content="Chippu Out In Wild is a free endless runnner arcade game you can play instantly in your browser. Dodge logs, grab power-ups, defeat bosses, and climb the global leaderboard. No download needed." />
+  <meta name="keywords" content="chippu out in wild, flappy chippu, flappy bird game, flappy bird clone, free arcade game, free online game, browser game, play in browser, dodge logs game, boss fight arcade, online leaderboard game, no download game, free online game, free online games, game, games, free games, computer games, chippu, Chippu" />
+  <meta name="author" content="A2 Studios" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://a2studios.xyz/" />
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="Chippu Out In Wild - Free Endless Runner Arcade Game" />
+  <meta property="og:description" content="Dodge logs, grab power-ups, defeat bosses and climb the leaderboard in this exciting arcade adventure!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://a2studios.xyz/" />
+  <meta property="og:image" content="https://a2studios.xyz/assets/img/og-image.jpg" />
+  <meta property="og:site_name" content="Chippu Out In Wild" />
+  <meta property="og:locale" content="en_US" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chippu Out In Wild - Free Endless Runner Arcade Game" />
+  <meta name="twitter:description" content="Dodge logs, grab power-ups, defeat bosses and climb the leaderboard!" />
+  <meta name="twitter:image" content="https://a2studios.xyz/assets/img/og-image.jpg" />
+  
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <!-- FAVICON - Generated from favicon-generator.html               -->
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  
+  <!-- Legacy fallback (browsers request this automatically) -->
+  <link rel="shortcut icon" href="/ChippuOutInWild_CiphererArts.ico" type="image/x-icon" />
+  
+  <!-- PNG versions for modern browsers -->
+  <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  
+  <!-- Apple Touch Icon for iOS / Safari -->
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  
+  <!-- Web App Manifest (keep your existing one or generate a new one) -->
+  <link rel="manifest" href="site.webmanifest" />
+  
+  <!-- Microsoft Tiles -->
+  <meta name="msapplication-TileColor" content="#1f3a2c" />
+  <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+  <meta name="theme-color" content="#1f3a2c" />
+  
+  <!-- Schema.org structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Chippu Out In Wild",
+    "description": "A free endless runner arcade game where you dodge logs, collect power-ups, defeat bosses and compete on the leaderboard.",
+    "genre": "Arcade",
+    "gamePlatform": "Web Browser",
+    "operatingSystem": "All",
+    "applicationCategory": "Game",
+    "browserRequirements": "Requires JavaScript and Canvas support",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=5">
+  
+  <!-- Embed specific styles for Profile & Shop Modals so it works immediately -->
+  <style>
+    /* Profile Modal Styles */
+    .profile-header { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.05); padding: 12px; border-radius: 8px; margin-bottom: 10px; }
+    .username-section { display: flex; align-items: center; gap: 8px; }
+    .coins-section { font-size: 16px; color: var(--amber-dark); font-weight: 800; }
+    .friends-list .friend-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 14px; font-weight: 600; }
+    .friends-list .friend-item:last-child { border-bottom: none; }
+    
+    /* Shop Modal Styles */
+    .shop-section-title { font-family: var(--font-display); font-size: 18px; color: var(--forest-dark); border-bottom: 2px solid var(--line); width: 100%; margin: 10px 0 8px; padding-bottom: 4px; text-align: left; }
+    .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; width: 100%; }
+    .shop-item { background: var(--panel-muted); border: 2px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; transition: transform 0.1s; }
+    .shop-item:hover { transform: translateY(-2px); }
+    .shop-item.equipped { border-color: var(--green-btn); background: rgba(76, 175, 80, 0.1); }
+    .shop-item h4 { margin: 0; font-size: 15px; font-family: var(--font-display); color: var(--ink); line-height: 1.2; }
+    .shop-item p { margin: 0; font-size: 12px; color: var(--ink-soft); line-height: 1.3; }
+    .shop-item-icon { width: 48px; height: 48px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+    
+    /* Ensure profile header acts like a button visually */
+    #playerProfile:hover { background: rgba(0,0,0,0.4); transform: translateY(-1px); }
+    #playerProfile { cursor: pointer; transition: background 0.15s, transform 0.1s; }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+    <div id="introOverlay">
+      <video id="introVideo" autoplay muted playsinline>
+        <source src="assets/video/CinematicGameScene.mp4" type="video/mp4">
+      </video>
+      <div class="skip-hint">Click anywhere to skip</div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- TITLE BAR -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <header class="game-header">
+      <div class="header-content">
+        <div class="game-title">
+          <h1 class="visually-hidden">Chippu Out In Wild – Free Endless Runner Arcade Game</h1>
+          <img src="assets/img/gametitle.webp" alt="Chippu Out In Wild - Endless Runner Arcade Game" class="logo-img" />
+          <span class="game-subtitle">Dodge. Collect. Conquer.</span>
+        </div>
+
+        <!-- Player profile now sits inside the header & is clickable to open profile -->
+        <div class="player-profile" id="playerProfile" title="Open Hunter Profile">
+          <div class="player-profile-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+              <path d="M12 3c-4.4 0-7 2.7-7 6.2 0 2.6 1.6 4.5 3.4 5.7L7 21h2l1.1-4.3c.6.1 1.2.2 1.9.2s1.3-.1 1.9-.2L15 21h2l-1.4-6.1c1.8-1.2 3.4-3.1 3.4-5.7C19 5.7 16.4 3 12 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <circle cx="9.7" cy="9" r="1" fill="currentColor"/>
+              <circle cx="14.3" cy="9" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="player-profile-stats">
+            <div class="profile-stat">
+              <span class="profile-stat-value" id="statHighScore">0</span>
+              <span class="profile-stat-label">Best Score</span>
+            </div>
+            <div class="profile-stat">
+              <span class="profile-stat-value" id="statTotalCoins">0</span>
+              <span class="profile-stat-label">Coins</span>
+            </div>
+            <div class="profile-stat">
+              <span class="profile-stat-value" id="statBossDefeats">0</span>
+              <span class="profile-stat-label">Bosses Beaten</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <div class="auth-buttons">
+            <span id="whoami" class="user-status"></span>
+            <button id="btnLogin" class="pixel-btn">Log In</button>
+            <button id="btnSignup" class="pixel-btn amber">Sign Up</button>
+            <button id="btnLogout" class="pixel-btn danger" style="display:none;">Log Out</button>
+          </div>
+          <button id="btnMute" class="icon-btn" title="Toggle music">🔊</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="stage">      
+      
+
+      <div class="game-frame">
+        <canvas id="gameCanvas" width="960" height="540"></canvas>
+        <div class="rotate-hint">↻ Rotate for a bigger play area</div>
+        <div class="hud-overlay">
+          <div class="hud-score" id="hudScore">0</div>
+        </div>
+
+        <button id="btnPause" class="icon-btn pause-float hidden" title="Pause" aria-label="Pause">⏸</button>
+
+        <!-- MOBILE TOUCH CONTROLS — mirrors keyboard left/right/dash/shoot.
+             Hidden on mouse/trackpad devices via CSS (pointer: coarse check).
+             Shown only during actual gameplay via the "active" class toggled
+             from game.js so they don't cover menus/modals. -->
+        <div class="touch-controls hidden" id="touchControls">
+          <div class="touch-controls-left">
+            <button class="touch-btn" id="btnTouchLeft" aria-label="Move left">◀</button>
+            <button class="touch-btn" id="btnTouchRight" aria-label="Move right">▶</button>
+          </div>
+          <div class="touch-controls-right">
+            <button class="touch-btn touch-btn-shoot" id="btnTouchShoot" aria-label="Shoot">🔥</button>
+            <button class="touch-btn touch-btn-dash" id="btnTouchDash" aria-label="Dash">⚡</button>
+          </div>
+        </div>
+
+        <div class="center-overlay video-bg" id="startOverlay">
+          <video class="bg-video" autoplay muted loop playsinline>
+            <source src="assets/video/CinematicGameScene.mp4" type="video/mp4">
+          </video>
+          <div class="home-panel">
+            <p class="home-hint">Click, tap, or press Space to flap</p>
+            <div class="btn-col">
+              <button id="btnPlay" class="img-btn"><img src="assets/img/btn_start.webp" alt="Start Game"></button>
+              <button id="btnShopHome" class="img-btn"><img src="assets/img/btn_shop.webp" alt="Shop"></button>
+              <button id="btnHowTo" class="img-btn"><img src="assets/img/btn_htplay.webp" alt="How to Play"></button>
+              <button id="btnSettingsOpen" class="img-btn"><img src="assets/img/btn_settings.webp" alt="Settings"></button>
+              <button id="btnLeaderboardOpen" class="img-btn"><img src="assets/img/btn_leaderboard.webp" alt="Leaderboard"></button>
+              <button id="btnAboutDev" class="img-btn"><img src="assets/img/about_dev.webp" alt="About Developer"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="center-overlay hidden" id="pauseOverlay">
+          <div class="overlay-content">
+            <h2>PAUSED</h2>
+            <div class="btn-row">
+              <button id="btnResume" class="cta-btn">▶ Resume</button>
+              <button id="btnPauseMenu" class="cta-btn secondary">Main Menu</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="center-overlay hidden game-over-transparent" id="gameOverOverlay">
+          <img class="bg-still" src="assets/img/title.webp" alt="Game Over" />
+          <div class="game-over-score" id="finalScoreMsg">0</div>
+          <div class="game-over-ground">
+            <div class="btn-row">
+              <button id="btnRetry" class="img-btn"><img src="assets/img/btn_retry.webp" alt="Retry"></button>
+              <button id="btnBackHome" class="img-btn"><img src="assets/img/btn_menu.webp" alt="Main Menu"></button>
+            </div>
+            <p id="bestScoreMsg" class="game-over-substatus"></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="site-footer">
+      <p>Chippu Out In Wild &mdash; A free endless runner arcade game. Play now!</p>
+      <p class="footer-links">
+        <a href="#" id="footerHow To Play Link">How to Play</a> | 
+        <a href="#" id="footerLeaderboardLink">Leaderboard</a> | 
+        <a href="#" id="footerSettingsLink">Settings</a>
+      </p>
+      <div class="visually-hidden">
+        <p>Chippu Out In Wild is a free endless runner arcade game you can play instantly in your browser, no download or install required. Dodge logs, collect power-ups, defeat bosses, and compete for the top spot on the global leaderboard.</p>
+        <h2>Is Chippu Out In Wild free to play?</h2>
+        <p>Yes. Chippu Out In Wild is completely free to play in your browser on desktop or mobile, with no download required.</p>
+        <h2>How do you play Chippu Out In Wild?</h2>
+        <p>Click, tap, or press Space to flap and dodge incoming logs. Grab power-ups along the way and defeat bosses to rack up points on the leaderboard.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ── How to play modal ── -->
+  <div class="modal-backdrop hidden" id="howToBackdrop">
+    <div class="modal wood-panel howto-modal">
+      <button class="close-x" id="howToClose" aria-label="Close">&times;</button>
+      <h2>HOW TO PLAY</h2>
+      <img src="assets/img/controls.webp" alt="Controls: click, tap, or press space to flap" class="controls-img">
+      <div class="btn-row">
+        <button id="btnHowToBack" class="cta-btn small ghost">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Settings modal ── -->
+  <div class="modal-backdrop hidden" id="settingsBackdrop">
+    <div class="modal wood-panel">
+      <button class="close-x" id="settingsClose" aria-label="Close">&times;</button>
+      <h2>SETTINGS</h2>
+      <label for="musicVol">Music</label>
+      <input type="range" id="musicVol" min="0" max="100" value="40" class="slider">
+      <label for="sfxVol">Sound Effects</label>
+      <input type="range" id="sfxVol" min="0" max="100" value="70" class="slider">
+      
+      <div class="settings-auth-section">
+        <hr class="settings-divider">
+        <div id="settingsAuthStatus" style="font-size:14px; opacity:0.8; margin:4px 0;">Not logged in</div>
+        <div class="btn-row" style="margin-top:4px;">
+          <button id="settingsBtnLogin" class="pixel-btn">Log In</button>
+          <button id="settingsBtnLogout" class="pixel-btn danger" style="display:none;">Log Out</button>
+        </div>
+      </div>
+      
+      <div class="btn-row" style="margin-top:16px;">
+        <button id="btnSettingsBack" class="cta-btn small ghost">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Leaderboard modal ── -->
+  <div class="modal-backdrop hidden" id="leaderboardBackdrop">
+    <div class="modal wood-panel leaderboard-modal">
+      <button class="close-x" id="leaderboardClose" aria-label="Close">&times;</button>
+      <h2>🏆 WILD RANKINGS</h2>
+      <ol id="leaderboardList">
+        <li class="empty-msg">Loading...</li>
+      </ol>
+      <div class="btn-row">
+        <button id="btnLeaderboardBack" class="cta-btn small ghost">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── About Developer modal ── -->
+  <div class="modal-backdrop hidden" id="aboutDevBackdrop">
+    <div class="modal wood-panel about-dev-modal">
+      <button class="close-x" id="aboutDevClose" aria-label="Close">&times;</button>
+      <h2>ABOUT DEVELOPER</h2>
+      <div class="about-dev-content">
+        <p><strong>Chippu Out In Wild</strong> is built by <strong>A2 Studios</strong>, an Indie studio making free, no-download browser games.</p>
+        <p>Got feedback, found a bug, or just want to say hi? Reach out anytime.</p>
+        <div class="about-dev-team">
+          <div class="about-dev-person">
+            <span class="about-dev-role">Ayush Singh Gautam</span>
+            <a href="mailto:asg.content.work@gmail.com">asg.work.content@gmail.com</a>
+            <a href="https://www.linkedin.com/in/ayush-singh-gautam-74a386331/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+          <div class="about-dev-person">
+            <span class="about-dev-role">Alex Raj</span>
+            <a href="mailto:rodgeralex44@gmail.com">rodgeralex44@gmail.com</a>
+            <a href="https://www.linkedin.com/in/pycipherer" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="btnAboutDevBack" class="cta-btn small ghost">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Player Profile Modal ── -->
+  <div class="modal-backdrop hidden" id="profileBackdrop">
+    <div class="modal wood-panel" style="width: 480px; max-width: 95vw;">
+      <button class="close-x" id="profileClose" aria-label="Close">&times;</button>
+      <h2>HUNTER DOSSIER</h2>
+      
+      <div style="width:100%; background:rgba(0,0,0,0.05); padding:16px; border-radius:12px; margin-bottom:12px; border: 1px solid var(--line);">
+        <div class="profile-header" style="background: transparent; padding: 0; margin-bottom: 0;">
+          <div class="username-section">
+            <span id="profileUsername" style="font-size:24px; font-family:var(--font-display); font-weight:800; color:var(--ink);">Player</span>
+            <input type="text" id="profileNameInput" maxlength="18" style="display:none; width: 180px; padding: 6px 12px; border-radius: 6px;" />
+            <button id="btnEditName" class="pixel-btn small" style="padding: 4px 10px; font-size: 12px; min-width: 0;">Edit</button>
+            <button id="btnSaveName" class="pixel-btn small amber" style="display:none; padding: 4px 10px; font-size: 12px; min-width: 0;">Save</button>
+          </div>
+          <div class="coins-section">
+            <span style="font-size:12px; opacity:0.8; color: var(--ink-soft); font-family: var(--font-body);">Total Wealth:</span>
+            <span id="profileCoins" style="font-size:20px;">0</span> 💰
+          </div>
+        </div>
+        <div id="nameChangeMsg" style="font-size:12px; color:var(--red-dark); margin-top:8px;"></div>
+      </div>
+
+      <div class="multiplayer-banner" style="width:100%; background:var(--panel-muted); border:2px dashed var(--line); padding:16px; border-radius:12px; text-align:center; opacity:0.7;">
+        <h3 style="margin:0 0 4px 0; color:var(--ink); font-family:var(--font-display);">🌍 CO-OP MULTIPLAYER</h3>
+        <p style="margin:0; font-size:13px; font-weight:bold; color:var(--ink-soft);">[ COMING SOON ]</p>
+      </div>
+
+      <div style="width:100%; margin-top:16px;">
+        <h3 style="margin:0 0 8px 0; font-size:16px; border-bottom:1px solid var(--line); padding-bottom:4px; font-family: var(--font-display); color: var(--forest-dark);">Friends List</h3>
+        <ul id="friendsList" class="friends-list" style="list-style:none; padding:0; margin:0; max-height:120px; overflow-y:auto; background:var(--panel-muted); border-radius:8px; padding:8px;">
+          <!-- Friends injected here -->
+        </ul>
+        <div style="text-align:center; margin-top:12px;">
+          <button id="btnInviteFriend" class="pixel-btn amber" style="font-size:13px; padding:8px 16px;">+ Invite Friend</button>
+          <div id="inviteMsg" style="font-size:12px; color:var(--green-btn-dark); margin-top:6px; font-weight: 700;"></div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button id="btnProfileBack" class="cta-btn small ghost">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Home Shop Modal ── -->
+  <div class="modal-backdrop hidden" id="shopBackdrop">
+    <div class="modal wood-panel" style="width: 560px; max-width: 95vw;">
+      <button class="close-x" id="shopClose" aria-label="Close">&times;</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+        <h2>ITEM SHOP</h2>
+        <div style="font-family: var(--font-display); font-size: 18px; color: var(--amber-dark); font-weight: 800;">
+          💰 <span id="shopCoinBalance">0</span>
+        </div>
+      </div>
+      
+      <h3 class="shop-section-title">Characters</h3>
+      <div class="shop-grid" id="shopCharactersGrid">
+        <!-- Injected via JS -->
+      </div>
+
+      <h3 class="shop-section-title">Power-ups</h3>
+      <div class="shop-grid" id="shopPowerupsGrid">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button id="btnShopBack" class="cta-btn small ghost">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Auth modal ── -->
+  <div class="modal-backdrop hidden" id="authBackdrop">
+    <div class="modal wood-panel">
+      <button class="close-x" id="authClose" aria-label="Close">&times;</button>
+      <h2 id="authTitle">LOG IN</h2>
+      <div class="error-msg" id="authError"></div>
+      <label for="authUsername" id="usernameLabelWrap" style="display:none;">Player's name</label>
+      <input type="text" id="authUsername" placeholder="Shown on the leaderboard" style="display:none;"
+        maxlength="18" />
+      <label for="authEmail">Email</label>
+      <input type="email" id="authEmail" placeholder="you@example.com" />
+      <label for="authPassword">Password</label>
+      <input type="password" id="authPassword" placeholder="At least 6 characters" />
+      <div class="row">
+        <button id="authSubmit" class="pixel-btn amber">Log In</button>
+      </div>
+      <div class="switch-mode">
+        <span id="switchPrompt">Don't have an account?</span>
+        <button id="switchModeBtn">Sign up</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="auth.js"></script>
+  <script type="module" src="leaderboard.js"></script>
+  <script type="module" src="audio.js"></script>
+  <script type="module" src="game.js"></script>
+</body>
+
+</html>
